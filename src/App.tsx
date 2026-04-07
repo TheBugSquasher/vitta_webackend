@@ -34,6 +34,28 @@ function ContactForm() {
   })
 
   const handleSubmit = async () => {
+    const emailRegex = new RegExp('^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$')
+    const phoneRegex = new RegExp('^\\d{10}$')
+
+    if (!formData.name.trim()) {
+      setSubmitStatus('Incomplete form: please enter a valid full name.')
+      return
+    }
+
+    if (!emailRegex.test(formData.email.trim())) {
+      setSubmitStatus('Incomplete form: please enter a valid email address.')
+      return
+    }
+
+    if (!phoneRegex.test(formData.phone.trim())) {
+      setSubmitStatus('Incomplete form: phone number must be exactly 10 digits.')
+      return
+    }
+
+    if (!formData.amount.trim()) {
+      setSubmitStatus('Incomplete form: investment amount is required.')
+      return
+    }
     try {
       const payload = new URLSearchParams(formData)
       await fetch('https://script.google.com/macros/s/AKfycbyswXV9eCSIMgvplalTD81RWJaRTOLxiP-IR5hmA2jYD74uG3D35F_jPwVBDJASmYbh/exec', {
@@ -54,14 +76,68 @@ function ContactForm() {
       <h2 className="mb-6 text-3xl font-semibold">Client Onboarding</h2>
       <p className="mb-4 text-gray-500">Fill in your details and our team will reach out from support@vittavault.in.</p>
       <div className="grid gap-4 md:grid-cols-2">
-        <input className="rounded-2xl border p-4" placeholder="Full Name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} />
-        <input className="rounded-2xl border p-4" placeholder="Email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
-        <input className="rounded-2xl border p-4" placeholder="Phone" value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} />
-        <input className="rounded-2xl border p-4" placeholder="Investment Amount" value={formData.amount} onChange={(e) => setFormData({ ...formData, amount: e.target.value })} />
-      </div>
-      <textarea className="mt-4 w-full rounded-2xl border p-4" rows={4} placeholder="Tell us your investment goals" value={formData.goals} onChange={(e) => setFormData({ ...formData, goals: e.target.value })} />
+  <input
+    required
+    minLength={2}
+    pattern="[A-Za-z ]{2,}"
+    className="rounded-2xl border p-4"
+    placeholder="Full Name"
+    value={formData.name}
+    onChange={(e) =>
+      setFormData({ ...formData, name: e.target.value })
+    }
+  />
+
+  <input
+    required
+    type="email"
+    className="rounded-2xl border p-4"
+    placeholder="Email"
+    value={formData.email}
+    onChange={(e) =>
+      setFormData({ ...formData, email: e.target.value })
+    }
+  />
+
+  <input
+    required
+    type="tel"
+    inputMode="numeric"
+    maxLength={10}
+    className="rounded-2xl border p-4"
+    placeholder="Phone (10 digits)"
+    value={formData.phone}
+    onChange={(e) =>
+      setFormData({
+        ...formData,
+        phone: e.target.value.replace(/\D/g, '').slice(0, 10),
+      })
+    }
+  />
+
+  <input
+    required
+    type="number"
+    className="rounded-2xl border p-4"
+    placeholder="Investment Amount"
+    value={formData.amount}
+    onChange={(e) =>
+      setFormData({ ...formData, amount: e.target.value })
+    }
+  />
+</div>
+
+<textarea
+  className="mt-4 w-full rounded-2xl border p-4"
+  rows={4}
+  placeholder="Tell us your investment goals"
+  value={formData.goals}
+  onChange={(e) =>
+    setFormData({ ...formData, goals: e.target.value })
+  }
+/>
       <button onClick={handleSubmit} className="mt-4 rounded-2xl bg-green-600 px-6 py-3 text-white shadow-sm">Submit Enquiry</button>
-      <p className="mt-3 text-sm text-green-600">{submitStatus}</p>
+      <p className={`mt-3 text-sm ${submitStatus.toLowerCase().includes('incomplete') || submitStatus.toLowerCase().includes('failed') ? 'text-red-600' : 'text-green-600'}`}>{submitStatus}</p>
     </div>
   )
 }
@@ -134,33 +210,33 @@ function SIPCalculator() {
               <div>
                 <label className="mb-2 block font-semibold">Monthly Investment</label>
                 <input type="number" min="500" max="100000" step="100" value={monthly} onChange={(e) => setMonthly(Number(e.target.value))} className="w-full rounded-2xl border border-emerald-200 bg-white px-4 py-3 text-lg font-semibold text-green-700 shadow-sm outline-none focus:ring-2 focus:ring-green-400" />
-                <p className="mt-2 text-lg font-bold">₹{monthly.toLocaleString()}</p>
+                <p className="mt-2 text-lg font-bold">{monthly ? `₹${monthly.toLocaleString()}` : ''}</p>
               </div>
             ) : (
               <div>
                 <label className="mb-2 block font-semibold">Initial Investment</label>
                 <input type="number" min="10000" max="5000000" step="1000" value={principal} onChange={(e) => setPrincipal(Number(e.target.value))} className="w-full rounded-2xl border border-emerald-200 bg-white px-4 py-3 text-lg font-semibold text-green-700 shadow-sm outline-none focus:ring-2 focus:ring-green-400" />
-                <p className="mt-2 text-lg font-bold">₹{principal.toLocaleString()}</p>
+                <p className="mt-2 text-lg font-bold">{principal ? `₹${principal.toLocaleString()}` : ''}</p>
               </div>
             )}
 
             <div>
               <label className="mb-2 block font-semibold">Expected Annual Return</label>
               <input type="number" min="1" max="30" value={rate} onChange={(e) => setRate(Number(e.target.value))} className="w-full rounded-2xl border border-emerald-200 bg-white px-4 py-3 text-lg font-semibold text-green-700 shadow-sm outline-none focus:ring-2 focus:ring-green-400" />
-              <p className="mt-2 text-lg font-bold">{rate}%</p>
+              <p className="mt-2 text-lg font-bold">{rate ? `${rate}%` : ''}</p>
             </div>
 
             <div>
               <label className="mb-2 block font-semibold">Time Period</label>
               <input type="number" min="1" max="30" value={years} onChange={(e) => setYears(Number(e.target.value))} className="w-full rounded-2xl border border-emerald-200 bg-white px-4 py-3 text-lg font-semibold text-green-700 shadow-sm outline-none focus:ring-2 focus:ring-green-400" />
-              <p className="mt-2 text-lg font-bold">{years} Years</p>
+              <p className="mt-2 text-lg font-bold">{years ? `${years} Years` : ''}</p>
             </div>
           </div>
         </div>
 
         <div className="rounded-[2rem] bg-gradient-to-br from-green-50 to-white p-8 shadow-xl">
           <p className="text-sm font-semibold uppercase tracking-wider text-gray-500">Projected Value</p>
-          <h3 className="mt-4 text-5xl font-bold text-green-600">₹{currentValue.toLocaleString()}</h3>
+          <h3 className="mt-4 text-5xl font-bold text-green-600">{currentValue > 0 ? `₹${currentValue.toLocaleString()}` : ''}</h3>
           <div className="mt-6 rounded-3xl bg-white p-4 shadow-sm">
             <svg viewBox="0 0 280 160" className="h-44 w-full">
               <line x1="20" y1="140" x2="260" y2="140" stroke="#d1d5db" strokeWidth="1" />
@@ -169,8 +245,8 @@ function SIPCalculator() {
             </svg>
           </div>
           <div className="mt-8 grid grid-cols-2 gap-4">
-            <div className="rounded-2xl bg-white p-5 shadow-sm"><p className="text-sm text-gray-500">Invested</p><p className="text-2xl font-bold">₹{invested.toLocaleString()}</p></div>
-            <div className="rounded-2xl bg-white p-5 shadow-sm"><p className="text-sm text-gray-500">Returns</p><p className="text-2xl font-bold">₹{(currentValue - invested).toLocaleString()}</p></div>
+            <div className="rounded-2xl bg-white p-5 shadow-sm"><p className="text-sm text-gray-500">Invested</p><p className="text-2xl font-bold">{invested > 0 ? `₹${invested.toLocaleString()}` : ''}</p></div>
+            <div className="rounded-2xl bg-white p-5 shadow-sm"><p className="text-sm text-gray-500">Returns</p><p className="text-2xl font-bold">{currentValue - invested > 0 ? `₹${(currentValue - invested).toLocaleString()}` : ''}</p></div>
           </div>
         </div>
       </div>
