@@ -167,17 +167,23 @@ function SIPCalculator() {
   const invested = mode === 'sip' ? monthly * months : principal
 
   const chartPoints = Array.from({ length: years + 1 }, (_, i) => {
-    const value =
-      mode === 'sip'
-        ? i === 0
-          ? 0
-          : monthly * (((Math.pow(1 + monthlyRate, i * 12) - 1) / monthlyRate) * (1 + monthlyRate))
-        : principal * Math.pow(1 + annualRate, i)
+  const value =
+    mode === 'sip'
+      ? i === 0
+        ? 0
+        : monthly *
+          (((Math.pow(1 + monthlyRate, i * 12) - 1) / monthlyRate) *
+            (1 + monthlyRate))
+      : principal * Math.pow(1 + annualRate, i)
 
-    const x = 20 + i * (240 / years)
-    const y = 140 - (value / Math.max(currentValue, 1)) * 110
-    return { x, y: Math.max(20, y) }
-  })
+  const x = 30 + i * (220 / years)
+  const y = 140 - (value / Math.max(currentValue, 1)) * 100
+
+  return {
+    x: Number(x.toFixed(1)),
+    y: Number(Math.max(30, y).toFixed(1)),
+  }
+})
 
   const path = chartPoints.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ')
 
@@ -238,11 +244,53 @@ function SIPCalculator() {
           <p className="text-sm font-semibold uppercase tracking-wider text-gray-500">Projected Value</p>
           <h3 className="mt-4 text-5xl font-bold text-green-600">{currentValue > 0 ? `₹${currentValue.toLocaleString()}` : ''}</h3>
           <div className="mt-6 rounded-3xl bg-white p-4 shadow-sm">
-            <svg viewBox="0 0 280 160" className="h-44 w-full">
-              <line x1="20" y1="140" x2="260" y2="140" stroke="#d1d5db" strokeWidth="1" />
-              <line x1="20" y1="20" x2="20" y2="140" stroke="#d1d5db" strokeWidth="1" />
-              <path d={path} fill="none" stroke="currentColor" strokeWidth="4" className="text-green-600" />
-            </svg>
+            <svg viewBox="0 0 280 170" className="h-48 w-full">
+  {/* axes */}
+  <line x1="30" y1="140" x2="260" y2="140" stroke="#d1d5db" />
+  <line x1="30" y1="30" x2="30" y2="140" stroke="#d1d5db" />
+
+  {/* grid */}
+  <line x1="30" y1="105" x2="260" y2="105" stroke="#e5e7eb" strokeDasharray="4 4" />
+  <line x1="30" y1="70" x2="260" y2="70" stroke="#e5e7eb" strokeDasharray="4 4" />
+
+  {/* labels */}
+  <text x="145" y="160" textAnchor="middle" className="fill-gray-400 text-[9px]">
+    Time (Years)
+  </text>
+
+  <text
+    x="12"
+    y="85"
+    textAnchor="middle"
+    transform="rotate(-90 12 85)"
+    className="fill-gray-400 text-[9px]"
+  >
+    Value (₹)
+  </text>
+
+  <text x="24" y="144" textAnchor="end" className="fill-gray-400 text-[8px]">
+    ₹0
+  </text>
+
+  <text x="24" y="74" textAnchor="end" className="fill-gray-400 text-[8px]">
+    ₹{(currentValue / 100000).toFixed(1)}L
+  </text>
+
+  <path
+    d={path}
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="4"
+    className="text-green-600"
+  />
+
+  <circle
+    cx={chartPoints[chartPoints.length - 1].x}
+    cy={chartPoints[chartPoints.length - 1].y}
+    r="4"
+    className="fill-green-600"
+  />
+</svg>
           </div>
           <div className="mt-8 grid grid-cols-2 gap-4">
             <div className="rounded-2xl bg-white p-5 shadow-sm"><p className="text-sm text-gray-500">Invested</p><p className="text-2xl font-bold">{invested > 0 ? `₹${invested.toLocaleString()}` : ''}</p></div>
