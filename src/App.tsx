@@ -365,24 +365,63 @@ function FloatingChatbot() {
   const [input, setInput] = useState('')
 
   const handleSend = () => {
-    if (!input.trim()) return
-    const userText = input.trim()
-    let reply = 'Our team can help with that. You can also scroll to the onboarding form below.'
+  if (!input.trim()) return
 
-    const q = userText.toLowerCase()
-    if (q.includes('sip')) reply = 'A SIP lets you invest a fixed amount regularly and benefit from rupee cost averaging and compounding.'
-    else if (q.includes('lumpsum')) reply = 'A lumpsum investment is a one-time investment amount that compounds over your selected duration.'
-    else if (q.includes('minimum')) reply = 'Most SIPs can start from ₹500 depending on the fund selected.'
-    else if (q.includes('contact') || q.includes('support')) reply = 'Our support team usually reaches out shortly after you submit the onboarding form.'
-    else if (q.includes('return') || q.includes('profit')) reply = 'Expected returns depend on market performance, risk appetite, and investment duration. The calculators above can help estimate scenarios.'
-    else if (q.includes('mutual fund')) reply = 'Mutual funds pool money from multiple investors and are professionally managed across diversified assets.'
-    else if (q.includes('tax')) reply = 'Certain mutual funds like ELSS may offer tax-saving benefits under applicable Indian tax laws.'
-    else if (q.includes('hello') || q.includes('hi')) reply = 'Hey! Happy to help with investing, calculators, onboarding, or general finance questions.'
-    else if (q.includes('safe') || q.includes('risk')) reply = 'Every investment carries some level of market risk. Diversification and long-term planning help manage it.'
+  const userText = input.trim()
+  const q = userText.toLowerCase()
 
-    setMessages((prev) => [...prev, { role: 'user', text: userText }, { role: 'bot', text: reply }])
-    setInput('')
+  let reply = 'Happy to help.'
+  let shouldRedirect = false
+
+  if (
+    q.includes('invest') ||
+    q.includes('start') ||
+    q.includes('portfolio') ||
+    q.includes('advisor') ||
+    q.includes('recommend')
+  ) {
+    reply =
+      'For personalized investment guidance, please get in touch with our team below.'
+    shouldRedirect = true
+  } else if (q.includes('sip')) {
+    reply =
+      'A SIP lets you invest a fixed amount regularly and benefit from compounding over time.'
+  } else if (q.includes('lumpsum')) {
+    reply =
+      'A lumpsum is a one-time investment amount that compounds over your selected time period.'
+  } else if (q.includes('return') || q.includes('profit')) {
+    reply =
+      'Returns vary based on market conditions, risk appetite, and investment horizon.'
+  } else if (q.includes('mutual fund')) {
+    reply =
+      'Mutual funds pool money from multiple investors and are professionally managed.'
+  } else if (q.includes('minimum')) {
+    reply = 'Most SIPs can begin from ₹500 depending on the selected fund.'
+  } else if (q.includes('tax')) {
+    reply =
+      'Certain funds like ELSS may provide tax-saving benefits under Indian tax laws.'
+  } else if (q.includes('risk') || q.includes('safe')) {
+    reply =
+      'All investments carry market risk, but diversification helps reduce exposure.'
   }
+
+  setMessages((prev) => [
+    ...prev,
+    { role: 'user', text: userText },
+    { role: 'bot', text: reply },
+  ])
+
+  setInput('')
+
+  if (shouldRedirect) {
+    setTimeout(() => {
+      setOpen(false)
+      document
+        .getElementById('contact-us')
+        ?.scrollIntoView({ behavior: 'smooth' })
+    }, 1000)
+  }
+}
 
   return (
     <>
