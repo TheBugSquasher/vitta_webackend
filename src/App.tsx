@@ -308,22 +308,36 @@ function HomePage() {
           </div>
         </nav>
 
-        <section className="mx-auto max-w-6xl px-6 pb-24 pt-40">
-          <div className="grid items-center gap-12 md:grid-cols-2">
-            <div>
-              <p className="mb-4 inline-block rounded-full bg-green-100 px-4 py-2 text-sm font-semibold text-green-700">Trusted by 1000+ investors</p>
-              <h1 className="text-6xl font-semibold leading-tight md:text-7xl">Invest smarter.<br />Build wealth with confidence.</h1>
-              <p className="mt-6 max-w-2xl text-lg text-gray-600">Premium mutual fund advisory and seamless client onboarding.</p>
-            </div>
-            <div className="rounded-[2rem] border border-green-100 bg-gradient-to-br from-emerald-100 via-white to-cyan-100 p-8 shadow-2xl">
-              <p className="text-sm text-gray-500">Portfolio Growth</p>
-              <p className="mt-2 text-3xl font-semibold">+18.4%</p>
-              <div className="mt-6 h-40 rounded-3xl bg-gradient-to-br from-emerald-200 to-cyan-200 p-4">
-                <svg viewBox="0 0 300 120" className="h-full w-full"><path d="M10 100 C 60 90, 90 70, 130 75 S 210 40, 290 20" fill="none" stroke="currentColor" strokeWidth="5" className="text-green-600" /></svg>
-              </div>
-            </div>
-          </div>
-        </section>
+        <section className="relative mx-auto max-w-6xl overflow-hidden px-6 pb-24 pt-40">
+  <div className="absolute inset-0 -z-10 bg-gradient-to-r from-emerald-200/30 via-lime-100/20 to-cyan-200/30 blur-3xl" />
+
+  <div className="text-center">
+    <p className="mb-4 inline-block rounded-full bg-green-100 px-4 py-2 text-sm font-semibold text-green-700">
+      Trusted by 1000+ investors
+    </p>
+
+    <h1 className="bg-gradient-to-r from-green-700 via-emerald-600 to-cyan-600 bg-clip-text text-6xl font-bold leading-tight text-transparent md:text-7xl">
+      Invest smarter.
+      <br />
+      Build wealth with confidence.
+    </h1>
+
+    <p className="mx-auto mt-6 max-w-3xl text-lg text-gray-600">
+      Premium mutual fund advisory and seamless client onboarding.
+    </p>
+
+    <button
+      onClick={() =>
+        document.getElementById('contact-us')?.scrollIntoView({
+          behavior: 'smooth',
+        })
+      }
+      className="mt-8 rounded-2xl bg-green-600 px-8 py-4 font-bold text-white shadow-2xl transition hover:scale-105"
+    >
+      Start Investing →
+    </button>
+  </div>
+</section>
 
         <InfoSections />
         <section className="mx-auto max-w-6xl px-6 py-8"><div className="grid gap-6 md:grid-cols-3"><div className="rounded-3xl bg-white/90 p-8 shadow-lg"><p className="text-sm font-semibold uppercase tracking-wider text-green-600">Testimonials</p><p className="mt-4 text-lg font-semibold">“Seamless onboarding and incredibly clear guidance.”</p><p className="mt-3 text-sm text-gray-500">— Investor, Bengaluru</p></div><div className="rounded-3xl bg-white/90 p-8 shadow-lg"><p className="text-sm font-semibold uppercase tracking-wider text-green-600">Testimonials</p><p className="mt-4 text-lg font-semibold">“The SIP planning tools made decisions much easier.”</p><p className="mt-3 text-sm text-gray-500">— HNI Client, Hyderabad</p></div><div className="rounded-3xl bg-white/90 p-8 shadow-lg"><p className="text-sm font-semibold uppercase tracking-wider text-green-600">Testimonials</p><p className="mt-4 text-lg font-semibold">“Premium support with transparent portfolio advice.”</p><p className="mt-3 text-sm text-gray-500">— Investor, Mumbai</p></div></div></section><section className="mx-auto max-w-6xl px-6 py-8"><div className="rounded-[2rem] bg-white/90 p-8 shadow-xl"><p className="text-sm font-semibold uppercase tracking-wider text-green-600">Frequently Asked Questions</p><div className="mt-6 space-y-4"><div className="rounded-2xl bg-emerald-50 p-5"><p className="font-bold">What is SIP?</p><p className="mt-2 text-gray-600">A Systematic Investment Plan lets you invest a fixed amount periodically.</p></div><div className="rounded-2xl bg-emerald-50 p-5"><p className="font-bold">Minimum investment amount?</p><p className="mt-2 text-gray-600">Many funds start from ₹500 SIPs.</p></div><div className="rounded-2xl bg-emerald-50 p-5"><p className="font-bold">How soon will support contact me?</p><p className="mt-2 text-gray-600">Usually shortly after form submission during working hours.</p></div></div></div></section><button onClick={() => document.getElementById('contact-us')?.scrollIntoView({ behavior: 'smooth' })} className="fixed bottom-6 left-6 z-[60] rounded-full border border-green-500/40 bg-green-600 px-5 py-3 font-bold text-white shadow-2xl ring-1 ring-green-300/50 transition duration-300 hover:bg-green-500"><img src="/vittavault-logo.png" alt="arrow logo" className="inline h-4 w-4 object-contain mr-2" /> Start Investing →</button><SIPCalculator />
