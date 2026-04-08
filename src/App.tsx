@@ -299,7 +299,7 @@ function HomePage() {
         <FlairDots />
         <nav className="fixed top-0 z-50 w-full border-b border-gray-100 bg-white/80 backdrop-blur-md">
           <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-            <div className="flex items-center gap-3"><img src="/vittavault-logo.png" alt="VittaVault logo" className="h-10 w-auto object-contain" /></div>
+            <div className="flex items-center gap-3"><img src="/vittavault-logo.png" alt="VittaVault logo" className="h-14 w-auto object-contain" /></div>
             <div className="flex items-center gap-3 text-sm">
               <button onClick={() => scrollTo('why-us')} className="rounded-2xl border border-white/40 bg-white/30 px-4 py-2 font-semibold text-green-800 shadow-xl backdrop-blur-md ring-1 ring-white/30 transition duration-300 hover:bg-white/40 hover:shadow-2xl hover:-translate-y-0.5">Why Us</button>
               <button onClick={() => scrollTo('about-us')} className="rounded-2xl border border-white/40 bg-white/30 px-4 py-2 font-semibold text-green-800 shadow-xl backdrop-blur-md ring-1 ring-white/30 transition duration-300 hover:bg-white/40 hover:shadow-2xl hover:-translate-y-0.5">About Us</button>
